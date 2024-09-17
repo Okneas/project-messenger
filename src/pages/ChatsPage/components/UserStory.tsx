@@ -1,6 +1,6 @@
 import { Box,Typography } from "@mui/material";
 import { AddIcon } from "../../../svg/AddIcon";
-import { AddStoryIcon } from "../../../svg/AddSoryIcon";
+import { AddStoryIcon } from "../../../svg/AddStoryIcon";
 
 export default  function UserStory(){
     return(
