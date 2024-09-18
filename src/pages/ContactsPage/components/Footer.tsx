@@ -17,6 +17,8 @@ export default function Footer(){
                 {location.pathname === '/contacts' ? <Button><Box><Typography sx={{textTransform:"initial", color:"#0F1828",fontWeight:"Medium" }}>Контакты</Typography><EllipseIcon></EllipseIcon></Box></Button> : <Button><GroupIcon></GroupIcon></Button> }
                 {location.pathname === '/contacts' ? <Button><CommunicationIcon></CommunicationIcon></Button>: <Button onClick={() => {console.log(location)}}><Box><Typography sx={{textTransform:"initial", color:"#0F1828",fontWeight:"Medium" }}>Чаты</Typography><EllipseIcon></EllipseIcon></Box></Button>}
                 {location.pathname === '/contacts' ? <Button><OthersIcon></OthersIcon></Button>: <Button><OthersIcon></OthersIcon></Button>}
+                {location.pathname === '/more' ? <Button><CommunicationIcon></CommunicationIcon></Button>: <Button><GroupIcon></GroupIcon></Button>}
+                {location.pathname === '/more' ? <Button><Box><Typography>More</Typography><EllipseIcon></EllipseIcon></Box></Button>: <Button><GroupIcon></GroupIcon></Button> }
             </FooterWrapper>
         </Box>
     )
