@@ -8,7 +8,7 @@ import { EllipseIcon } from "src/svg/EllipseIcon";
 
 export default function Footer(){
     const location = useLocation();
-    if(location.pathname === '/'){
+    if(location.pathname === '/' || location.pathname.split('/')[1] === "chatRoom"){
         return null;    
     }
     return(

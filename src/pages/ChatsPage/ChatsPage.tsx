@@ -8,7 +8,7 @@ import UserStory from "./components/UserStory";
 import { FC, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import { IUser } from "src/interfaces/interfaces";
-import Contact from "../ContactsPage/components/Contact";
+import { Contact } from "../ContactsPage/components/Contact";
 
 interface Props {
       socket: Socket | null;
@@ -31,7 +31,7 @@ export const ChatsPage: FC<Props> = () => {
             <Box component="header" pt={5} pb={1} display="flex" flexDirection = "row" justifyContent="space-between">
                 <Container><Typography ml={4} variant="SubHeading1">Чаты</Typography></Container>
                 <Container sx={{width:"60%"}}>
-                    <Button onClick={() => {console.log(user)}}><ChatIcon></ChatIcon></Button>
+                    <Button><ChatIcon></ChatIcon></Button>
                     <Button><CheckedIcon></CheckedIcon></Button>
                 </Container>
             </Box>
@@ -51,8 +51,8 @@ export const ChatsPage: FC<Props> = () => {
                         ),
                     },
                 }} sx={{background: "#F7F7FC", borderRadius:"4px", width:"90%"}} label="Поиск"></Field>
-                {user?.chats.chatsId.map((id) => {
-                    return <Contact key={id}></Contact>
+                {user?.chats.chatsId.map((item, id) => {
+                    return <Contact key={id} chatRoomId={item}></Contact>
                 })}
             </Box>
         </ChatsPageWrapper>

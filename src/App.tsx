@@ -4,6 +4,7 @@ import { ContactPage } from "./pages/ContactsPage/ContactsPage"
 import { ChatsPage } from "./pages/ChatsPage/ChatsPage"
 import { useEffect, useState } from "react"
 import { io, Socket } from "socket.io-client"
+import { ChatRoom } from "./pages/ChatRoom/ChatRoom"
 function App() {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -26,6 +27,7 @@ function App() {
       <Route index element={<RegistrationPage/>}></Route>
       <Route path="/contacts" element={<ContactPage/>}></Route>
       <Route path="/chats" element={<ChatsPage socket={socket}/>}></Route>
+      <Route path="/chatRoom/:userId" element={<ChatRoom socket={socket}/>}></Route>
     </Routes>
   )
 }
