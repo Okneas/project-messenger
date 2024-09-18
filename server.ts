@@ -15,13 +15,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('message', (data) => {
-    io.to(data.userId).emit('messageResponse', data);
+    io.in(data.userId).emit('messageResponse', data);
+    console.log(socket.rooms);
   });
   socket.on('sendByClick', (data) => {
     socket.broadcast.to(data.distUserId.chatsId[0]).emit('messageResponse', data.message);
-    console.log(socket.rooms);
-    console.log(data.distUserId.chatsId[0]);
-    console.log(data.message);
   })
 });
 

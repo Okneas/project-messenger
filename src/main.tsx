@@ -12,7 +12,7 @@ createRoot(document.getElementById('root')!).render(
     <ThemeProvider>
       <CssBaseline enableColorScheme></CssBaseline>
       <App />
-      <Footer></Footer>
+      <Footer/>
     </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,
