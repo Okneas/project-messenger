@@ -7,28 +7,28 @@ export default (mode: PaletteMode) =>
       fontSize: 14,
       Heading1: {
         fontSize: "32px",
-        fontWeight: "bold"
+        fontWeight: "bold",
       },
       Heading2: {
         fontSize: "24px",
-        fontWeight: "bold"
+        fontWeight: "bold",
       },
       SubHeading1: {
         fontSize: "18px",
-        fontWeight: 600
+        fontWeight: 600,
       },
       SubHeading2: {
         fontSize: "16px",
-        fontWeight: 600
+        fontWeight: 600,
       },
       BodyText1: {
         fontSize: "14px",
-        fontWeight: 600
+        fontWeight: 600,
       },
       BodyText2: {
         fontSize: "14px",
-        fontWeight: "normal"
-      }
+        fontWeight: "normal",
+      },
     },
     palette: {
       mode,
