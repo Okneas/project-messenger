@@ -4,7 +4,7 @@ export interface IUser {
     name: string,
     lastname: string,
     contacts: Array<number>,
-    chats: {chatsId: Array<string>},
+    chats: Array<number>,
     avatarImg: string,
 }
 
@@ -15,7 +15,14 @@ export interface ResponseError {
 }
 
 export interface IMessage {
-    userId: string;
-    text: string,
-    senderId: string;
+    id: string,
+    chat_id: string,
+    sender_id: string,
+    sender_name: string,
+    text: string
+}
+
+export interface IChat {
+    id: string,
+    user_ids: Array<string>;
 }
