@@ -17,6 +17,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
   const chatId = useLocation().pathname.split("/")[2];
   const [messages, setMessages] = useState<Array<IMessage>>([]);
   const [user, setUser] = useState<IUser | null>(null);
+  const [isFetching, setIsFentching] = useState(true);
   useEffect(() => {
     if(socket){
       socket.emit("joinChatRoom", chatId);
@@ -31,6 +32,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
       ).data;
       if (result) {
         setMessages(result);
+        setIsFentching(false);
       }
     })();
   }, [socket, chatId]);
@@ -57,7 +59,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
         marginTop="25%"
         maxHeight="630px"
       >
-        {messages?.map((item, id) => {
+        {!isFetching ? messages?.map((item, id) => {
           return (
             <MessageComponent
               key={id}
@@ -65,7 +67,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
               my={item.sender_id === user?.id}
             />
           );
-        })}
+        }) : null}
       </Box>
       <ChatRoomFooter socket={socket} />
     </Grid2>

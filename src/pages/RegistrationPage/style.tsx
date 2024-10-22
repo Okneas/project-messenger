@@ -64,3 +64,15 @@ export const PinCodeDot = styled(Box)(() => ({
   backgroundColor: "#EDEDED",
   position: "absolute",
 }));
+
+export const ProfileCircle = styled(Box)(() => ({
+  mt:10,
+  width:"100px",
+  height:"100px",
+  borderRadius:"100%",
+  backgroundColor: "#F7F7FC",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  overflow: "hidden",
+}));
