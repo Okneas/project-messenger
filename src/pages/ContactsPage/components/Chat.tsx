@@ -19,10 +19,11 @@ export const Chat: FC<IContactProps> = ({ chatRoomId }) => {
     nav(`/chatRoom/${chatRoomId}`);
   };
   useEffect(() => {
-    if(chatData?.chat_picture) {
+    if (chatData?.chat_picture) {
       (async () => {
-        const result = (await doRequest<Blob | null>(getProfileImg, chatData?.chat_picture))
-          .data;
+        const result = (
+          await doRequest<Blob | null>(getProfileImg, chatData?.chat_picture)
+        ).data;
         if (result) {
           setChatImgLocalURL(URL.createObjectURL(result));
           setIsLoading(false);
@@ -37,10 +38,13 @@ export const Chat: FC<IContactProps> = ({ chatRoomId }) => {
       if (tempUser.id) {
         (async () => {
           const result = (
-            await doRequest<IChat | null>(getChatById, {id: chatRoomId, userId: tempUser.id})
+            await doRequest<IChat | null>(getChatById, {
+              id: chatRoomId,
+              userId: tempUser.id,
+            })
           ).data;
           if (result) {
-              setChatData(result);
+            setChatData(result);
           }
         })();
       }

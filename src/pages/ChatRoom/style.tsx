@@ -28,9 +28,47 @@ export const ChatInputTextBox = styled(TextField)(() => ({
 }));
 
 export const MessageWrapper = styled(Grid2)(() => ({
-  flexDirection: "row",
+  display: "flex",
+  flexDirection: "column",
   padding: 10,
   maxWidth: "300px",
   minWidth: "5%",
-  marginTop: 10,
+  marginTop: 8,
+  marginBottom: 32, 
+  boxShadow: "1px 1px 3px 0px rgba(0,0,0,0.4)",
+}));
+
+export const ImagePreviewWrapper = styled(Box)(() => ({
+  width: "120px",
+  height: "80px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: "10px",
+  overflow: "hidden",
+  position: "relative",
+  boxShadow: "2px 2px 10px 0px rgba(0,0,0,0.4)",
+}));
+
+export const ImagePreviewContainer = styled(Box)(() => ({
+  width: "100vw",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  bottom: "9%",
+  marginLeft: "8px",
+  position: "fixed",
+  gap: "8px",
+}));
+
+export const ClearIconWrapper = styled('div')(() => ({
+  position: "absolute",
+  width: 24,
+  height: 24,
+  borderRadius: 9,
+  right: 0,
+  top: 0,
+  backgroundColor: "gray",
+  opacity: "70%"
 }));

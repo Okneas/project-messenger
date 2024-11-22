@@ -13,12 +13,10 @@ io.on("connection", (socket) => {
   socket.on("join", (data) => {
     socket.join(data.userId);
     console.log(`User loged in. User id is ${data.userId}`);
-    console.log(socket.rooms);
   });
 
   socket.on("joinChatRoom", (chat_id) => {
     socket.join(chat_id + "chat");
-    console.log(socket.rooms, 12);
   });
 
   socket.on("sendNotification", (chatData: IChat, messageData: IMessage) => {
@@ -28,13 +26,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("leaveChatRoom", (chat_id) => {
-    console.log(chat_id);
     socket.leave(chat_id + "chat");
-    console.log(socket.rooms);
   });
 
   socket.on("message", (data) => {
     io.in(data.chat_id).emit("messageResponse", data.message);
+    console.log(data);
   });
 
   socket.on("addContact", (data) => {

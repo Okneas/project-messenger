@@ -19,7 +19,9 @@ export interface IMessage {
     chat_id: string,
     sender_id: string,
     sender_name: string,
-    text: string
+    text: string,
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    resources: any,
 }
 
 export interface IChat {
@@ -27,4 +29,14 @@ export interface IChat {
     user_ids: Array<string>;
     chat_name: string;
     chat_picture: string;
+}
+
+export interface IImageStat {
+    width: number,
+    heigth: number
+}
+
+export interface IMessageContent {
+    resources: FormData;
+    text: string;
 }

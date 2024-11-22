@@ -21,7 +21,7 @@ function App() {
           .data;
         if (result) {
           localStorage.setItem("user", JSON.stringify(result));
-          const newSocket = io("https://mymessengerwebsocket.serveo.net");
+          const newSocket = io("https://mymessengerapi.pagekite.me/");
           newSocket.emit("join", { userId: `${result.id}` });
           setSocket(newSocket);
           return () => {
@@ -37,7 +37,7 @@ function App() {
         .data;
       if (result) {
         localStorage.setItem("user", JSON.stringify(result));
-        const newSocket = io("https://mymessengerwebsocket.serveo.net");
+        const newSocket = io("https://mymessengerapi.pagekite.me/");
         newSocket.emit("join", { userId: `${result.id}` });
         setSocket(newSocket);
         return () => {
