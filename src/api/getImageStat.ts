@@ -1,7 +1,8 @@
 import axios, { AxiosHeaders } from "axios";
 import { instance } from "./instance";
 
-export const getAllMesFromChat = (chat_id: string) =>
-  axios.get(instance + `Messages/GetAllMesFromChat/${chat_id}`, {
+export const getImageStat = (path: string) => {
+  return axios.get(instance + `Messages/GetImageStats/${path}`, {
     headers: new AxiosHeaders({ "ngrok-skip-browser-warning": "69420", "Access-Control-Allow-Origin": "*", }),
   });
+};

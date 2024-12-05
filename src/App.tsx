@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { RegistrationPage } from "./pages/RegistrationPage/RegistrationPage";
 import { ContactPage } from "./pages/ContactsPage/ContactsPage";
 import { ChatsPage } from "./pages/ChatsPage/ChatsPage";
@@ -9,45 +9,104 @@ import { MorePage } from "./pages/MorePage/MorePage";
 import doRequest from "./hooks/doRequest";
 import { IUser } from "./interfaces/interfaces";
 import { getUserByPhone } from "./api/getUserByPhone";
+import { ProfilePage } from "./pages/ProfilePage/ProfilePage";
+import { PushNotifications } from "@capacitor/push-notifications";
+
 function App() {
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
-  const location = useLocation();
+  const [registered, setRegistired] = useState("");
+  const [tokenNot, setTokenNot] = useState("");
+
   useEffect(() => {
-    if (location.pathname !== "/") {
-      const localUser = localStorage.getItem("user");
-      const phone = localStorage.getItem("phone");
-      if(phone){
-        (async () => {
-          const result = (await doRequest<IUser | null>(getUserByPhone, phone))
-            .data;
-          if (result) {
-            localStorage.setItem("user", JSON.stringify(result));
-          }
-        })();
+    PushNotifications.requestPermissions().then((result) => {
+      if (result.receive === "granted") {
+        // Подписка на уведомления
+        PushNotifications.register();
+      } else {
+        // Уведомление о том, что разрешение не было предоставлено
+        console.log("Push notification permission not granted");
       }
-      if (localUser) {
-        const newSocket = io("http://localhost:3000");
-        newSocket.emit("join", { userId: `${JSON.parse(localUser).id}` });
+    });
+
+    PushNotifications.addListener("registration", (token) => {
+      setTokenNot(token.value);
+      console.log("Token получен: " + token.value);
+    });
+
+    PushNotifications.addListener("registrationError", (token) => {
+      console.log(token.error);
+    });
+
+    // Обработчик получения уведомления
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const handlePushNotification = (notification: any) => {
+      setRegistired("Push notification received: " + notification);
+      // Здесь вы можете обработать уведомление
+    };
+
+    // Подписка на события
+    PushNotifications.addListener(
+      "pushNotificationReceived",
+      handlePushNotification
+    );
+    PushNotifications.addListener(
+      "pushNotificationActionPerformed",
+      (notification) => {
+        console.log("Push notification action performed: ", notification);
+        // Здесь вы можете обработать действие, например, переход к определенному экрану
+      }
+    );
+
+    return () => {
+      // Удаление слушателей при размонтировании компонента
+      PushNotifications.removeAllListeners();
+    };
+  }, []);
+  useEffect(() => {
+    const phone = localStorage.getItem("phone");
+    if (phone) {
+      (async () => {
+        const result = (await doRequest<IUser | null>(getUserByPhone, phone))
+          .data;
+        if (result) {
+          localStorage.setItem("user", JSON.stringify(result));
+          const newSocket = io("http://localhost:3001");
+          newSocket.emit("join", { userId: `${result.id}` });
+          setSocket(newSocket);
+          socket?.emit('registerDevice', { token: tokenNot, userId: result.id });
+          return () => {
+            newSocket.close();
+          };
+        }
+      })();
+    }
+  }, []);
+  const handleEnter = (phone: string) => {
+    (async () => {
+      const result = (await doRequest<IUser | null>(getUserByPhone, phone))
+        .data;
+      if (result) {
+        localStorage.setItem("user", JSON.stringify(result));
+        const newSocket = io("https://mymessengerapi.pagekite.me/");
+        newSocket.emit("join", { userId: `${result.id}` });
         setSocket(newSocket);
-        setIsConnected(true);
         return () => {
           newSocket.close();
         };
       }
-    }
-  }, [isConnected]);
+    })();
+  };
   return (
     <Routes>
-      <Route index element={<RegistrationPage />}></Route>
+      <Route index element={<RegistrationPage onEnter={handleEnter} />}></Route>
       <Route path="/contacts" element={<ContactPage />}></Route>
       <Route path="/chats" element={<ChatsPage socket={socket} />}></Route>
       <Route
         path="/chatRoom/:userId"
         element={<ChatRoom socket={socket} />}
       ></Route>
-      <Route path="/more" element={<MorePage />}></Route>
+      <Route path="/more" element={<MorePage reg={registered} />}></Route>
+      <Route path="/profile/:userId" element={<ProfilePage />}></Route>
     </Routes>
   );
 }

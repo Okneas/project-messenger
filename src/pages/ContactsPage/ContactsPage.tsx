@@ -6,8 +6,8 @@ import { Field } from "./style";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useEffect, useState } from "react";
 import { AddContactDialog } from "./components/AddContactDialog";
-import { Contact } from "./components/Contact";
 import { IUser } from "src/interfaces/interfaces";
+import { Contact } from "./components/Contact";
 
 export const ContactPage = () => {
   const [open, setOpen] = useState(false);
@@ -70,7 +70,7 @@ export const ContactPage = () => {
       </Box>
       <Grid2 container>
         {user?.contacts.map((item, id) => {
-          return <Contact key={id} chatRoomId={item}></Contact>;
+          return <Contact key={id} contactId={item}></Contact>;
         })}
       </Grid2>
     </ContactPageWrapper>

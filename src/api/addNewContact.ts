@@ -6,7 +6,12 @@ export const addNewContact = async (
   id: string,
 ) => {
   const data = await axios.post(
-    instance + `User/PostNewContact/${phone}/${id}`
+    instance + `User/PostNewContact/${phone}/${id}`,
+    {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    }
   );
   return data;
 };

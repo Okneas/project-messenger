@@ -3,18 +3,25 @@ import {
   CodeTextBox,
   PhoneNumberTextBox,
   PinCodeDot,
+  ProfileCircle,
   RegistrationButton,
   RegistrationWrapper,
 } from "./style";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ReturnIcon } from "src/svg/ReturnIcon";
 import { postNewUser } from "src/api/postNewUser";
 import { getUserByPhone } from "src/api/getUserByPhone";
 import { IUser } from "src/interfaces/interfaces";
 import { useNavigate } from "react-router-dom";
 import doRequest from "src/hooks/doRequest";
+import { getProfileImg } from "src/api/getProfileImg";
+import { generateProfileImg } from "src/api/generateProfileImg";
 
-export const RegistrationPage = () => {
+interface Props {
+  onEnter: (phone: string) => void;
+}
+
+export const RegistrationPage: FC<Props> = ({ onEnter }) => {
   const [step, setStep] = useState(0);
   const [phone, setPhone] = useState("");
   const [pin, setPin] = useState("");
@@ -22,6 +29,8 @@ export const RegistrationPage = () => {
   const [lastname, setLastname] = useState("");
   const [invalidPhone, setInvalidPhone] = useState(false);
   const [invalidPin, setInvalidPin] = useState(false);
+  const [profileImgURL, setProfileImgURL] = useState<string>("");
+  const [profileImgLocalURL, setProfileImgLocalURL] = useState<string>("");
 
   const nav = useNavigate();
 
@@ -72,9 +81,18 @@ export const RegistrationPage = () => {
         const result = (await doRequest<IUser | null>(getUserByPhone, phone))
           .data;
         if (result?.id) {
+          console.log(result);
           localStorage.setItem("user", JSON.stringify(result));
+          onEnter(phone);
           nav(`/contacts`);
         } else {
+          (async () => {
+            const result = (await doRequest<string>(generateProfileImg))
+              .data;
+            if (result) {
+              setProfileImgURL(result);
+            }
+          })();
           setStep(step + 1);
         }
       })();
@@ -85,6 +103,13 @@ export const RegistrationPage = () => {
 
   const handleVerificationPin = () => {
     if (pin.length === 4) {
+      (async () => {
+        const result = (await doRequest<Blob | null>(getProfileImg, profileImgURL))
+          .data;
+        if (result) {
+          setProfileImgLocalURL(URL.createObjectURL(result));
+        }
+      })();
       setInvalidPhone(false);
       setStep(step + 1);
     } else {
@@ -93,8 +118,9 @@ export const RegistrationPage = () => {
   };
 
   const handleSaveClick = () => {
-    postNewUser(phone, name, lastname);
+    postNewUser(phone, name, lastname, profileImgURL);
     localStorage.setItem("phone", phone);
+    onEnter(phone);
     nav(`/contacts`);
   };
 
@@ -226,13 +252,9 @@ export const RegistrationPage = () => {
               Ваш профиль
             </Typography>
           </Grid2>
-          <Box
-            mt={10}
-            width="100px"
-            height="100px"
-            borderRadius="100%"
-            sx={{ backgroundColor: "#F7F7FC" }}
-          ></Box>
+          <ProfileCircle>
+            <img width="100px" height="100px" src={profileImgLocalURL} alt="" />
+          </ProfileCircle>
           <PhoneNumberTextBox
             sx={{ marginTop: 4 }}
             onChange={handleChangeName}

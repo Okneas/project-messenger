@@ -10,11 +10,67 @@ import { PrivacyIconMore } from "../../svg/PrivacyIconMore";
 import { HelpIconMore } from "../../svg/HelpIconMore";
 import { InvitationIconMore } from "../../svg/InvitationIconMore";
 import { DataUsageIconMore } from "../../svg/DataUsageIconMore";
+import { FC } from "react";
 import ProfileSettings from "./components/profileSettings";
 
-export const MorePage = () => {
+interface Props {
+  reg: string;
+}
+
+export const MorePage: FC<Props> = ({ reg }) => {
   return (
     <MorePageWrapper>
+      <Box
+        component="header"
+        pt={5}
+        pb={1}
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+      >
+        <Container>
+          <Typography ml={2} variant="SubHeading1">
+            {reg}
+          </Typography>
+        </Container>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "row", ml: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "50px",
+              minWidth: "50px",
+              height: "50px",
+              borderRadius: "50px",
+              background: "#EDEDED",
+              ml: 2,
+            }}
+          >
+            <ProfileIcon></ProfileIcon>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              ml: 2,
+              width: "100%",
+            }}
+          >
+            <Typography variant="BodyText1">Имя</Typography>
+            <Typography fontSize="12px" color="#ADB5BD">
+              Номер
+            </Typography>
+          </Box>
         <Box component="header" pt={5} pb={1} display="flex" flexDirection = "row" justifyContent="space-between">
             <Container><Typography ml={2} variant="SubHeading1">Детали профиля</Typography></Container>
         </Box>
