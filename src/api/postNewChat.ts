@@ -7,7 +7,8 @@ export const postNewChat = async (
   chat_pic: string
 ) => {
   const data = await axios.post(
-    instance + `Chats/PostNewChat/${user_ids}/${chat_name}/${chat_pic}`
+    instance + `Chats/PostNewChat/${user_ids}/${chat_name}/${chat_pic}`,
+    {headers: { "Access-Control-Allow-Origin": "*" }}
   );
   return data;
 };

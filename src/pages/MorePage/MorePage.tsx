@@ -10,8 +10,13 @@ import { PrivacyIconMore } from "../../svg/PrivacyIconMore";
 import { HelpIconMore } from "../../svg/HelpIconMore";
 import { InvitationIconMore } from "../../svg/InvitationIconMore";
 import { DataUsageIconMore } from "../../svg/DataUsageIconMore";
+import { FC } from "react";
 
-export const MorePage = () => {
+interface Props {
+  reg: string;
+}
+
+export const MorePage: FC<Props> = ({ reg }) => {
   return (
     <MorePageWrapper>
       <Box
@@ -24,7 +29,7 @@ export const MorePage = () => {
       >
         <Container>
           <Typography ml={2} variant="SubHeading1">
-            Детали профиля
+            {reg}
           </Typography>
         </Container>
       </Box>

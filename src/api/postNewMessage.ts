@@ -21,6 +21,7 @@ export const PostNewMessage = async (
     instance +
       `Messages/PostNewMessage/${chat_id}/${sender_id}/${sender_name}/`,
       formData,
+      { headers: { "Access-Control-Allow-Origin": "*" }}
   );
   return data;
 };

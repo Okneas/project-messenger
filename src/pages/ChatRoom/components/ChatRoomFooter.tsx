@@ -83,6 +83,7 @@ export const ChatRoomFooter: FC<Props> = ({ socket }) => {
         resources: selectedImg,
       },
     };
+    socket?.emit('sendNotification', message);
     socket?.emit("message", data);
     (async () => {
       await PostNewMessage(chat_id, user?.name, user?.id, message, selectedImg);
