@@ -3,7 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { getMessaging, TokenMessage } from "firebase-admin/messaging";
 import { cert, initializeApp } from "firebase-admin/app";
-import serviceAcc from "./cfu-messenger-firebase-adminsdk-67zlb-bc62043bae.json";
+import serviceAcc from "./cfu-messenger-firebase-adminsdk-67zlb-65c9fe010b.json";
 
 const app = express();
 const server = http.createServer(app);
@@ -44,17 +44,21 @@ io.on("connection", (socket) => {
     socket.join(chat_id + "chat");
   });
 
-  socket.on("sendNotification", (message: string) => {
-    console.log(12);
+  socket.on("sendNotification", (data) => {
+    const { message, recievers, senderId, dataForMessage } = data;
+    io.in(dataForMessage.chat_id).emit("messageResponse", dataForMessage.message);
+    socket.emit("sendNotification", dataForMessage.message);
+    console.log(recievers);
     // Отправка уведомления всем зарегистрированным устройствам
-    for (const tokenString of Object.values(deviceTokens)) {
-      const payload: TokenMessage = {
-        notification: {
-          title: "Новое сообщение",
-          body: message,
-        },
-        token: tokenString,
-      };
+    for (const socketId of Object.keys(deviceTokens)) {
+        if(recievers.includes(Number(socketId)) && socketId !== senderId){
+          const payload: TokenMessage = {
+            notification: {
+              title: "Новое сообщение",
+              body: message,
+            },
+            token: deviceTokens[socketId],
+        };
       MessegingModule.send(payload)
         .then((response) => {
           console.log("Уведомление отправлено:", response);
@@ -62,6 +66,7 @@ io.on("connection", (socket) => {
         .catch((error) => {
           console.log("Ошибка при отправке уведомления:", error);
         });
+      }
     }
   });
 
@@ -70,8 +75,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (data) => {
-    io.in(data.chat_id).emit("messageResponse", data.message);
-    socket.emit("sendNotification", data.message);
+    //io.in(data.chat_id).emit("messageResponse", data.message);
+    //socket.emit("sendNotification", data.message);
     console.log(data);
   });
 

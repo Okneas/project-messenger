@@ -77,7 +77,7 @@ function App() {
         if (result) {
           setUser(result);
           localStorage.setItem("user", JSON.stringify(result));
-          const newSocket = io("https://delicate-glowworm-simply.ngrok-free.app/", {
+          const newSocket = io("https://wn75z7-62-3-0-45.ru.tuna.am", {
             extraHeaders: {
               "ngrok-skip-browser-warning": "69420"
             }});
@@ -96,7 +96,7 @@ function App() {
         .data;
       if (result) {
         localStorage.setItem("user", JSON.stringify(result));
-        const newSocket = io("https://mymessengerapi.pagekite.me/");
+        const newSocket = io("https://wn75z7-62-3-0-45.ru.tuna.am");
         newSocket.emit("join", { userId: `${result.id}` });
         setSocket(newSocket);
         return () => {
