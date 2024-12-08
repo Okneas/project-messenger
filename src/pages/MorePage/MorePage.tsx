@@ -2,16 +2,8 @@ import { Box, Button, Container, Divider, Typography } from "@mui/material";
 import { MorePageWrapper } from "./style";
 import { ArrowIcon } from "../../svg/ArrowIcon";
 import { ProfileIcon } from "../../svg/ProfileIcon";
-import { ChatIconMore } from "../../svg/ChatsIconMore";
-import { ProfileIconMore } from "../../svg/ProfileIconMore";
-import { AppearenceIconMore } from "../../svg/AppearenceIconMore";
-import { NotificationIconMore } from "../../svg/NotificationIconMore";
-import { PrivacyIconMore } from "../../svg/PrivacyIconMore";
-import { HelpIconMore } from "../../svg/HelpIconMore";
-import { InvitationIconMore } from "../../svg/InvitationIconMore";
-import { DataUsageIconMore } from "../../svg/DataUsageIconMore";
 import { FC } from "react";
-import ProfileSettings from "./components/profileSettings";
+import ProfileSettings from "./components/ProfileSettings";
 
 interface Props {
   reg: string;
@@ -103,6 +95,8 @@ export const MorePage: FC<Props> = ({ reg }) => {
             <ProfileSettings></ProfileSettings>
             <ProfileSettings></ProfileSettings>
         </Container>
+        </Box>
+      </Box>
     </MorePageWrapper>
   );
 };
