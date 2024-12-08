@@ -96,7 +96,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
                     key={id}
                     text={item.text}
                     my={item.sender_id === user?.id}
-                    resources={JSON.parse(item?.resources)}
+                    resources={item.resources.length !== 0 ? JSON.parse(item?.resources) : null}
                   />
                 );
               }
