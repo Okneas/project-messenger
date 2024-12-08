@@ -26,7 +26,7 @@ export interface IMessage {
 
 export interface IChat {
     id: string,
-    user_ids: Array<string>;
+    user_ids: string;
     chat_name: string;
     chat_picture: string;
 }

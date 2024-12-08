@@ -15,9 +15,10 @@ import { ImagePreview } from "./ImagePreview";
 
 interface Props {
   socket: Socket | null;
+  userIds: Array<string>;
 }
 
-export const ChatRoomFooter: FC<Props> = ({ socket }) => {
+export const ChatRoomFooter: FC<Props> = ({ socket, userIds }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const chat_id = useLocation().pathname.split("/")[2];
   const [user, setUser] = useState<IUser | null>(null);
@@ -83,7 +84,7 @@ export const ChatRoomFooter: FC<Props> = ({ socket }) => {
         resources: selectedImg,
       },
     };
-    socket?.emit('sendNotification', message);
+    socket?.emit('sendNotification', {message: message, recievers: userIds, senderId: user?.id});
     socket?.emit("message", data);
     (async () => {
       await PostNewMessage(chat_id, user?.name, user?.id, message, selectedImg);
