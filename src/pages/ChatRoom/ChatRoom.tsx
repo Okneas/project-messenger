@@ -18,6 +18,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
   const chatId = useLocation().pathname.split("/")[2];
   const [messages, setMessages] = useState<Array<IMessage>>([]);
   const [user, setUser] = useState<IUser | null>(null);
+  const [interlocutorId, setInterlocutorId] = useState<Array<string>>([]);
   const [isFetching, setIsFentching] = useState(true);
   const [chatName, setChatName] = useState("");
   useEffect(() => {
@@ -37,6 +38,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
         ).data;
         if (result) {
           setChatName(result.chat_name);
+          setInterlocutorId([...JSON.parse(result.user_ids)]);
         }
       })();
     }
@@ -109,7 +111,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
             })
           : null}
       </Box>
-      <ChatRoomFooter socket={socket} />
+      <ChatRoomFooter userIds={interlocutorId} socket={socket} />
     </Grid2>
   );
 };

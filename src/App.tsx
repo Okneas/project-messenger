@@ -16,6 +16,12 @@ function App() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [registered, setRegistired] = useState("");
   const [tokenNot, setTokenNot] = useState("");
+  const [user, setUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    socket?.emit('registerDevice', { token: tokenNot, userId: user?.id });
+
+  }, [tokenNot, socket])
 
   useEffect(() => {
     PushNotifications.requestPermissions().then((result) => {
@@ -69,11 +75,14 @@ function App() {
         const result = (await doRequest<IUser | null>(getUserByPhone, phone))
           .data;
         if (result) {
+          setUser(result);
           localStorage.setItem("user", JSON.stringify(result));
-          const newSocket = io("http://localhost:3001");
+          const newSocket = io("https://delicate-glowworm-simply.ngrok-free.app/", {
+            extraHeaders: {
+              "ngrok-skip-browser-warning": "69420"
+            }});
           newSocket.emit("join", { userId: `${result.id}` });
           setSocket(newSocket);
-          socket?.emit('registerDevice', { token: tokenNot, userId: result.id });
           return () => {
             newSocket.close();
           };
