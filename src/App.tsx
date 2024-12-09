@@ -19,11 +19,6 @@ function App() {
   const [user, setUser] = useState<IUser | null>(null);
 
   useEffect(() => {
-    socket?.emit('registerDevice', { token: tokenNot, userId: user?.id });
-
-  }, [tokenNot, socket])
-
-  useEffect(() => {
     PushNotifications.requestPermissions().then((result) => {
       if (result.receive === "granted") {
         // Подписка на уведомления
@@ -69,6 +64,7 @@ function App() {
     };
   }, []);
   useEffect(() => {
+    console.log(user);
     const phone = localStorage.getItem("phone");
     if (phone) {
       (async () => {
@@ -77,11 +73,12 @@ function App() {
         if (result) {
           setUser(result);
           localStorage.setItem("user", JSON.stringify(result));
-          const newSocket = io("https://wn75z7-62-3-0-45.ru.tuna.am", {
+          const newSocket = io("https://om3o7a-62-3-0-45.ru.tuna.am", {
             extraHeaders: {
               "ngrok-skip-browser-warning": "69420"
             }});
           newSocket.emit("join", { userId: `${result.id}` });
+          newSocket.emit('registerDevice', { token: tokenNot, userId: result.id });
           setSocket(newSocket);
           return () => {
             newSocket.close();
@@ -89,15 +86,16 @@ function App() {
         }
       })();
     }
-  }, []);
+  }, [tokenNot]);
   const handleEnter = (phone: string) => {
     (async () => {
       const result = (await doRequest<IUser | null>(getUserByPhone, phone))
         .data;
       if (result) {
         localStorage.setItem("user", JSON.stringify(result));
-        const newSocket = io("https://wn75z7-62-3-0-45.ru.tuna.am");
+        const newSocket = io("https://om3o7a-62-3-0-45.ru.tuna.am");
         newSocket.emit("join", { userId: `${result.id}` });
+        newSocket.emit('registerDevice', { token: tokenNot, userId: result.id });
         setSocket(newSocket);
         return () => {
           newSocket.close();

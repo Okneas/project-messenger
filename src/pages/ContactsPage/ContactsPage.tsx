@@ -69,9 +69,10 @@ export const ContactPage = () => {
         ></Field>
       </Box>
       <Grid2 container>
-        {user?.contacts.map((item, id) => {
+        { user !== null ?
+        user.contacts.map((item, id) => {
           return <Contact key={id} contactId={item}></Contact>;
-        })}
+        }) : null}
       </Grid2>
     </ContactPageWrapper>
   );

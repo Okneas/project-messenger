@@ -79,6 +79,7 @@ export const ChatRoom: FC<Props> = ({ socket }) => {
           ? messages?.map((item, id) => {
               if (item.resources !== null) {
                 if (item.resources[0] instanceof ArrayBuffer) {
+                  console.log(item);
                   const blob = new Blob([item.resources[0]], {
                     type: "application/octet-stream",
                   });

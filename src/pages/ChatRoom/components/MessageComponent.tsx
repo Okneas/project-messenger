@@ -46,6 +46,8 @@ export const MessageComponent: FC<IMessageProps> = ({
     newImageStat.heigth = newHeight;
     newImageStat.width = newWidth;
 
+    console.log(newImageStat);
+
     return newImageStat;
   };
 
@@ -57,6 +59,21 @@ export const MessageComponent: FC<IMessageProps> = ({
     setSelectedImgId(ind);
     setOpen(true);
   };
+
+  useEffect(() => {
+    console.log(filesStats);
+    console.log(blob);
+    const temp: string[] = [];
+    if (blob) {
+      temp.push(URL.createObjectURL(blob));
+      const FS: IImageStat = { width: 250, heigth: 400 };
+      setFilesStats((Fs) => {
+        Fs?.push(FS);
+        return Fs;
+      });
+      setFiles(temp);
+    }
+  }, [blob, filesStats])
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -71,15 +88,13 @@ export const MessageComponent: FC<IMessageProps> = ({
         });
 
         await Promise.all(promises);
-      } else if (blob) {
-        temp.push(URL.createObjectURL(blob));
       }
 
       setFiles(temp);
     };
 
     fetchImages();
-  }, [blob]);
+  }, [blob, resources]);
 
   useEffect(() => {
     if (files !== null && files.length !== 0) {
@@ -121,6 +136,7 @@ export const MessageComponent: FC<IMessageProps> = ({
           marginRight: my ? 2 : "auto",
           boxShadow: "1px 1px 3px 0px rgba(0,0,0,0.4)",
         }}
+        onClick={() => console.log(filesStats)}
       >
         {!isLoadingFilesStats ? (
           <Box

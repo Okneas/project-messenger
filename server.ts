@@ -3,7 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { getMessaging, TokenMessage } from "firebase-admin/messaging";
 import { cert, initializeApp } from "firebase-admin/app";
-import serviceAcc from "./cfu-messenger-firebase-adminsdk-67zlb-65c9fe010b.json";
+import serviceAcc from "./cfu-messenger-firebase-adminsdk-67zlb-1c730d3860.json";
 
 const app = express();
 const server = http.createServer(app);
@@ -33,6 +33,9 @@ io.on("connection", (socket) => {
 
   socket.on("registerDevice", (data) => {
     const { token, userId } = data;
+    console.log(data);
+    console.log(data.userId);
+    console.log(userId);
     if (token) {
       deviceTokens[userId] = token; // Сохранение токена по ID сокета
       console.log("Токен устройства зарегистрирован:", token);
@@ -46,9 +49,8 @@ io.on("connection", (socket) => {
 
   socket.on("sendNotification", (data) => {
     const { message, recievers, senderId, dataForMessage } = data;
+    console.log(data);
     io.in(dataForMessage.chat_id).emit("messageResponse", dataForMessage.message);
-    socket.emit("sendNotification", dataForMessage.message);
-    console.log(recievers);
     // Отправка уведомления всем зарегистрированным устройствам
     for (const socketId of Object.keys(deviceTokens)) {
         if(recievers.includes(Number(socketId)) && socketId !== senderId){
